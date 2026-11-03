@@ -69,7 +69,7 @@ OpenCode discovers global skills from `~/.config/opencode/skills/` and compatibi
 
 ## Worktree lifecycle
 
-Apply the shared session-worktree rules using OpenCode's worktree tools where available, then move the session to the resulting directory. OpenCode's `worktree.directory` config controls placement, not whether to create a worktree. Cleanup is manual; no lifecycle hook is configured here.
+Apply the shared [session-worktree rules](../../instructions/worktrees.md): validate and reuse a suitable existing worktree before creating another. If a new worktree is needed, use OpenCode's worktree tools where available and move the session to the resulting directory. Keep the terminal, OpenCode session, tests, and development servers pointed at the same checkout. OpenCode's `worktree.directory` config controls placement, not whether to create a worktree. Cleanup is manual; no lifecycle hook is configured here.
 
 ## Verification
 
