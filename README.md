@@ -13,7 +13,7 @@ The reusable material lives in `instructions/` and `skills/`. Tool-specific load
 | `skills/clarify-before-build/SKILL.md` | Explicitly requested clarification of implementation decisions before coding |
 | `skills/code-review/SKILL.md` | One read-only review covering correctness, maintainability, reuse, tests, and claims |
 | `skills/bug-diagnosis/SKILL.md` | Evidence-driven debugging with reproduction and regression checks |
-| `skills/improve-codebase-architecture/SKILL.md` | Architecture survey with an offline HTML report and guided design discussion |
+| `skills/architecture-review/SKILL.md` | Architecture survey with an offline HTML report and guided design discussion |
 | `skills/codebase-design/`, `skills/grilling/`, `skills/domain-modeling/` | Architecture vocabulary and discussion workflows; domain-document edits require authorization |
 | `skills/prototype/SKILL.md` | Throwaway logic demos and alternative UI designs, with approval before implementation or publication |
 | `skills/session-handoff/SKILL.md` | Explicitly requested context transfer to another session or agent |
@@ -48,7 +48,7 @@ Code review contains all review criteria in one skill. Small improvement support
 
 Nothing here installs itself or changes live configuration. The OpenCode adapter has not been behavior-tested. Add other adapters only when needed.
 
-Imported and adapted skills include local notes with the upstream revision, any intentional differences, and the original license notice. The [architecture import notes](skills/improve-codebase-architecture/README.md) also track its supporting skills.
+Imported and adapted skills include local notes with the upstream revision, any intentional differences, and the original license notice. The [architecture import notes](skills/architecture-review/README.md) also track its supporting skills.
 
 ## Improving a workflow
 
