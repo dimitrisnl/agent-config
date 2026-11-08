@@ -10,7 +10,7 @@ Surface architectural friction and propose **deepening opportunities**: refactor
 
 This command is _informed_ by the project's domain model and built on a shared design vocabulary:
 
-- Call the Skill tool with "codebase-design" for the architecture vocabulary (**module**, **interface**, **depth**, **seam**, **adapter**, **leverage**, **locality**) and its principles (the deletion test, "the interface is the test surface", "one adapter = hypothetical seam, two = real"). Use these terms exactly in every suggestion, and don't drift into "component," "service," "API," or "boundary."
+- Load the `codebase-design` skill for the architecture vocabulary (**module**, **interface**, **depth**, **seam**, **adapter**, **leverage**, **locality**) and its principles (the deletion test, "the interface is the test surface", "one adapter = hypothetical seam, two = real"). Use these terms exactly in every suggestion, and don't drift into "component," "service," "API," or "boundary."
 - The domain language in `GLOSSARY.md` gives names to good seams; ADRs in `docs/adr/` record decisions this command should not re-litigate.
 
 ## Process
@@ -34,6 +34,10 @@ Then spawn a sub-agent with a fresh context window to walk the codebase. Don't f
 
 Apply the **deletion test** to anything you suspect is shallow: would deleting it concentrate complexity, or just move it? A "yes, concentrates" is the signal you want.
 
+Keep a candidate only when concrete code and relevant caller evidence establish current friction and a plausible benefit. Record source paths and line ranges, distinguish observations from proposed outcomes, and state what remains unverified. A speculative recommendation still needs evidence of the problem; unfamiliar structure alone is not a reason to refactor.
+
+Zero candidates is a valid outcome. If none is justified, report the area inspected, evidence limitations, and why no change is recommended. Stop without manufacturing candidates or starting the grilling loop. Skip the HTML report unless the user requested it as a deliverable; if requested, use the report safety rules below but summarize the no-findings result instead of candidate cards and a top recommendation.
+
 ### 2. Present candidates as an HTML report
 
 Write a self-contained HTML file to the OS temp directory so nothing lands in the repo. Resolve the temp dir from `$TMPDIR`, falling back to `/tmp` (or `%TEMP%` on Windows), and write to `<tmpdir>/architecture-review-<timestamp>.html` so each run gets a fresh file. Tell the user the absolute path.
@@ -45,6 +49,7 @@ Use inline CSS and static inline SVG for layout and diagrams. Do not load script
 For each candidate, render a card with:
 
 - **Files**: which files/modules are involved
+- **Evidence**: source paths and line ranges, relevant callers, observed friction, and verification limits
 - **Problem**: why the current architecture is causing friction
 - **Solution**: plain English description of what would change
 - **Benefits**: explained in terms of locality and leverage, and how tests would improve
@@ -53,7 +58,7 @@ For each candidate, render a card with:
 
 End the report with a **Top recommendation** section: which candidate you'd tackle first and why.
 
-**Use GLOSSARY.md vocabulary for the domain, and the `/codebase-design` vocabulary for the architecture.** If `GLOSSARY.md` defines "Order," talk about "the Order intake module," not "the FooBarHandler," and not "the Order service."
+**Use GLOSSARY.md vocabulary for the domain, and the `codebase-design` vocabulary for the architecture.** If `GLOSSARY.md` defines "Order," talk about "the Order intake module," not "the FooBarHandler," and not "the Order service."
 
 **ADR conflicts**: if a candidate contradicts an existing ADR, only surface it when the friction is real enough to warrant revisiting the ADR. Mark it clearly in the card (e.g. a warning callout: _"contradicts ADR-0007, but worth reopening because…"_). Don't list every theoretical refactor an ADR forbids.
 
@@ -63,11 +68,11 @@ Do NOT propose interfaces yet. After the file is written, ask the user: "Which o
 
 ### 3. Grilling loop
 
-Once the user picks a candidate, call the Skill tool with "grilling" to walk the decision tree with them: constraints, dependencies, the shape of the deepened module, what sits behind the seam, what tests survive.
+Once the user picks a candidate, load the `grilling` skill to walk the decision tree with them: constraints, dependencies, the shape of the deepened module, what sits behind the seam, what tests survive.
 
-Call the Skill tool with "domain-modeling" as decisions crystallize. Its editing-authorization rule applies: propose glossary and ADR wording in the conversation unless the user has authorized those documentation edits. Follow the configured session-worktree rules before editing:
+Load the `domain-modeling` skill as decisions crystallize. Its editing-authorization rule applies: propose glossary and ADR wording in the conversation unless the user has authorized those documentation edits. Follow the configured session-worktree rules before editing:
 
 - **Naming a deepened module after a concept not in `GLOSSARY.md`?** Propose a glossary entry; add it only within authorized scope. Create the file lazily if needed and authorized.
 - **Sharpening a fuzzy term during the conversation?** Capture the proposed definition; update `GLOSSARY.md` only within authorized scope.
 - **User rejects the candidate with a load-bearing reason?** Offer an ADR, framed as: _"Want me to record this as an ADR so future architecture reviews don't re-suggest it?"_ Only offer when the reason would actually be needed by a future explorer to avoid re-suggesting the same thing; skip ephemeral reasons ("not worth it right now") and self-evident ones.
-- **Want to explore alternative interfaces for the deepened module?** Call the Skill tool with "codebase-design" and use its design-it-twice parallel sub-agent pattern.
+- **Want to explore alternative interfaces for the deepened module?** Load the `codebase-design` skill and use its design-it-twice parallel sub-agent pattern.

@@ -31,7 +31,7 @@ Third-party services (Stripe, Twilio, etc.) you don't control. The deepened modu
 
 ## Testing strategy: replace, don't layer
 
-- Old unit tests on shallow modules become waste once tests at the deepened module's interface exist; delete them.
+- Before deleting old tests, identify the behaviour each protects, including error paths, ordering, and edge cases, and verify that coverage survives at the deepened module's interface. Delete tests tied to removed internals only after preserving that coverage; keep tests for contracts that still exist.
 - Write new tests at the deepened module's interface. The **interface is the test surface**.
 - Tests assert on observable outcomes through the interface, not internal state.
-- Tests should survive internal refactors, since they describe behaviour, not implementation. If a test has to change when the implementation changes, it's testing past the interface.
+- Prefer tests that survive internal refactors because they describe behaviour, not implementation. A test needing changes is a signal to inspect its assertions and setup, not proof that it tests past the interface.

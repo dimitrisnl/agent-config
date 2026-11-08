@@ -1,12 +1,12 @@
 ---
 name: grilling
-description: Grill the user relentlessly about a plan, decision, or idea. Use when the user wants to stress-test their thinking, or uses any 'grill' trigger phrases.
+description: Stress-test a plan, decision, or idea with focused questions and recommendations. Use when the user wants to stress-test their thinking, or uses any 'grill' trigger phrases.
 disable-model-invocation: true
 ---
 
-Interview the user relentlessly until you reach a shared understanding. Map this as a **design tree**: every decision branches into the decisions that hang off it.
+Stress-test the selected plan, decision, or idea until consequential decisions within the agreed scope are clear. Map these as a **design tree**: each decision can branch into decisions that depend on it. Keep hypothetical future work outside the tree unless the user requests it.
 
-Work the tree in **rounds**. The **frontier** is every decision whose prerequisites are already settled: the questions you can ask _now_ without guessing at answers you haven't heard yet. Ask the whole frontier in one round: number each question and give your recommended answer. Then wait for the user's answers before the next round.
+Work the tree in **small rounds**. The **frontier** is every in-scope decision whose prerequisites are already settled: the questions you can ask _now_ without guessing at answers you haven't heard yet. Ask a manageable set of the highest-impact independent questions from the frontier: number each question and give your recommended answer. Then wait for the user's answers before the next round.
 
 Format a round like so:
 
@@ -28,4 +28,4 @@ Each round the user answers reshapes the tree: settled decisions push the fronti
 
 Finding _facts_ is your job, never the user's. When a frontier question needs a fact from the environment (filesystem, tools, etc.), dispatch a sub-agent with a fresh context window to find it; don't ask the user for anything you could look up yourself. Don't block on it: a running exploration is an unsettled prerequisite, so only the questions downstream of it wait for the sub-agent to report; ask the rest of the frontier now. The _decisions_ are the user's: put each to them and wait.
 
-The session is done when the frontier is empty: every branch of the design tree visited, nothing left silently assumed. Do not act on it until the user confirms you have reached a shared understanding.
+Finish when consequential decisions for the agreed scope are resolved or explicitly deferred by the user. Summarize the decisions, assumptions, and deferred questions; distinguish deferred blockers from optional follow-up work. Do not keep branching merely because more questions are possible. Exhaustive exploration is an option only when the user requests it. Do not act on the plan until the user confirms the shared understanding and authorizes the next action.

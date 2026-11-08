@@ -6,6 +6,7 @@ Adapted from Matt Pocock's [diagnosing-bugs skill](https://github.com/mattpocock
 
 - Rename the workflow to `bug-diagnosis` to match the collection's task-oriented naming.
 - Allow tentative investigation before reproduction, while keeping hypotheses distinct from confirmed causes.
+- Distinguish diagnosis-only requests from authorized fixes. Keep diagnosis-only work free of repository edits and ask before expanding into instrumentation or remediation; do not repeat approval when fixing was already requested.
 - Scale the process to uncertainty instead of requiring a fixed hypothesis count, exhaustive minimization, or seconds-fast checks.
 - Allow user-run steps and captured evidence; the interactive helper script is optional and unchanged.
 - Explain specific regression-test limitations without automatically blaming architecture or adding weak substitute tests.

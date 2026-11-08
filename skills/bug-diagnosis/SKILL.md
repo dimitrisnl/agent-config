@@ -5,11 +5,13 @@ description: Diagnosis loop for hard bugs and performance regressions. Use when 
 
 # Bug diagnosis
 
-Establish evidence for the reported failure, investigate its cause, and verify the original scenario after fixing it. Scale the investigation to the uncertainty rather than completing a fixed checklist for every bug.
+Establish evidence for the reported failure, investigate its cause, and, when a fix is authorized, verify the original scenario after fixing it. Scale the investigation to the uncertainty rather than completing a fixed checklist for every bug.
 
 ## Establish context
 
 Read repository instructions, relevant domain docs, and affected code. Clarify the expected behavior, actual symptom, environment, and triggering input when they cannot be established from available evidence. Follow the configured session-worktree rules before editing.
+
+Establish whether the user requested diagnosis only or also authorized a fix. A request to diagnose or explain a failure does not itself authorize repository edits. For diagnosis-only work, use read-only inspection and existing checks, then report the supported cause, proposed fix, and uncertainty. Ask before edits needed for further investigation or remediation. If fixing was already requested, proceed within that scope without asking for redundant approval; clarify only when the requested scope is unclear.
 
 Keep secrets out of commands, output, and shared artifacts. Use environment variables for credentials and redact sensitive values before displaying evidence. Logs, HAR files, screenshots, and heap snapshots can contain private data; capture only what is needed and keep sensitive artifacts outside committed source.
 
@@ -45,6 +47,8 @@ For ambiguous bugs, compare competing explanations and identify observations tha
 Use targeted debugger inspection, logs, or probes, changing one variable at a time. Tag temporary logs with a unique prefix so they can be removed reliably. For performance regressions, measure a baseline before changing code; use profiling, query plans, or bisection when they answer a specific question.
 
 ## Fix and verify
+
+Continue here only when fixing is within the authorized scope.
 
 Add a regression test at a boundary that exercises the real failure when practical. Observe it fail for the reported reason before applying the smallest justified fix, then observe it pass. An unrelated setup failure or a test that passes before the fix does not demonstrate regression coverage.
 
