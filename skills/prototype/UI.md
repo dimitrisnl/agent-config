@@ -17,7 +17,7 @@ A UI prototype is much easier to judge when it's **butting up against the rest o
 
 ### Sub-shape A: adjustment to an existing page (preferred)
 
-The route already exists. Variants are rendered **on the same route**, gated by a `?variant=` URL search param. The existing data fetching, params, and auth all stay. Only the rendering swaps. This is the default; pick it unless there's a specific reason not to.
+The route already exists. Variants are rendered **on the same route**, only in development and with a recognized `?variant=` URL search param. Otherwise, preserve the normal page. The existing data fetching, params, and auth all stay. Only the rendering swaps. This is the default; pick it unless there's a specific reason not to.
 
 If the prototype is for something that doesn't yet have a page but *would naturally live inside one* (a new section of the dashboard, a new card on the settings screen, a new step in an existing flow), it's still sub-shape A. Mount the variants inside the host page.
 
@@ -55,24 +55,29 @@ Variants must be **structurally different**: different layout, different informa
 
 ### 3. Wire them together
 
-Create a single switcher component on the route:
+Gate the entire prototype subtree, including the switcher, behind development mode and an explicit, recognized variant. Use the project's build-time development flag; the example below uses `NODE_ENV`:
 
 ```tsx
 // pseudo-code, adapt to the project's framework
-const variant = searchParams.get('variant') ?? 'A';
+const variants = ['A', 'B', 'C'];
+const variant = searchParams.get('variant');
+const showPrototype = process.env.NODE_ENV === 'development' && variant !== null && variants.includes(variant);
+if (!showPrototype) return <ExistingPage {...data} />;
 return (
   <>
     {variant === 'A' && <VariantA {...data} />}
     {variant === 'B' && <VariantB {...data} />}
     {variant === 'C' && <VariantC {...data} />}
-    <PrototypeSwitcher variants={['A','B','C']} current={variant} />
+    <PrototypeSwitcher variants={variants} current={variant} />
   </>
 );
 ```
 
-For sub-shape A (existing page): keep all the existing data fetching above the switcher; only the rendered subtree changes per variant.
+For sub-shape A (existing page): keep all the existing data fetching above the gate; only the rendered subtree changes per variant. `ExistingPage` represents the unchanged normal rendering, not a required new component.
 
-For sub-shape B (new page): the throwaway route under `/prototype/<name>` mounts the same switcher.
+For sub-shape B (new page): the throwaway route mounts the same switcher. Outside development or without a recognized variant, omit the route or return the framework's not-found response instead of rendering a prototype.
+
+Verify that missing and unrecognized variants preserve the normal page, recognized variants work in development, and production never renders prototype variants or controls.
 
 ### 4. Build the floating switcher
 
@@ -87,7 +92,7 @@ Behaviour:
 - Clicking an arrow updates the URL search param (use the framework's router, e.g. `router.replace` on Next, `navigate` on React Router, etc) so the variant is shareable and reload-stable.
 - Keyboard: `←` and `→` arrow keys also cycle. Don't intercept arrow keys when an `<input>`, `<textarea>`, or `[contenteditable]` is focused.
 - Visually distinct from the page (e.g. high-contrast pill, subtle shadow) so it's obviously not part of the design being evaluated.
-- Hidden in production builds: gate on `process.env.NODE_ENV !== 'production'` or an equivalent check, so a stray prototype merge can't ship the bar to users.
+- Rendered only inside the gated prototype subtree from step 3; hiding the bar alone does not prevent variants from reaching production.
 
 Put the switcher in a single shared component so both sub-shapes can reuse it. Locate it wherever shared UI lives in the project.
 

@@ -7,6 +7,7 @@ Provider-specific display metadata was omitted. The skill retains upstream autom
 - Require approval in shared guidance before opening prototypes, loading browser skills, or operating browsers, including direct skill invocation.
 - End with the local prototype, findings, and a recommendation rather than automatically implementing the decision, committing a preservation branch, or updating an issue.
 - Require explicit approval for production implementation, commits, pushes, and issue updates; choosing a variant is not authorization for those actions.
+- Gate the entire UI prototype behind development mode and a recognized variant parameter. Preserve existing-page rendering otherwise, and keep new prototype routes unavailable outside that gate.
 
 The workflow writes throwaway code to answer a logic or UI question. It is not production implementation or a test-driven workflow.
 
