@@ -5,6 +5,7 @@ description: Reproduce reported failures, investigate their cause, and verify fi
 
 # Diagnose a bug
 
+- A request to diagnose or explain does not authorize a fix. Investigate and report; edit only when the requested scope includes it.
 - Establish expected behavior, the actual symptom, and triggering conditions. Inspect available evidence before asking for missing information.
 - Confirm you are testing the correct application, version, and checkout. Follow the configured worktree rules before editing.
 - Reproduce the actual failure with the smallest reliable check, without losing the original scenario. A successful request or absence of errors does not prove the output or state is correct.
